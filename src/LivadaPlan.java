@@ -3,20 +3,26 @@ import java.awt.*;
 
 public class LivadaPlan extends JPanel {
 
-    public LivadaPlan() {
+    public LivadaPlan(Data[][] data) {
         super(new BorderLayout());
 
-        String[] columns = new String[]{"Дерево", "Дерево", "Дерево"};
+        String[] header = createHeader(data[0].length);
 
-        String[][] data = new String[][] {
-                {"Яблоко", "Вишня", "Груша"},
-                {"Абрикос", "Вишня", "Персик"},
-                {"Яблоко", "Вишня", "Яблоко"},
-                {"Яблоко", "Яблоко", "Яблоко"}
-        };
+        JTable table = new JTable(new DataTableModel(data, header));
+        JScrollPane scrollPane = new JScrollPane(table);
 
-        JTable table = new JTable(data, columns);
+        JTable rowTable = new RowNumberTable(table);
+        scrollPane.setRowHeaderView(rowTable);
+        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, rowTable.getTableHeader());
 
-        add(table, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private String[] createHeader(int length) {
+        String[] header = new String[length];
+        for (int i = 1; i <= length; i++) {
+            header[i - 1] = i + "";
+        }
+        return header;
     }
 }
