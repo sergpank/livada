@@ -35,6 +35,9 @@ public class Main {
         livadaPlan.setOpaque(true);
         frame.setContentPane(livadaPlan);
 
+        // Add menu bar with all 7 actions
+        frame.setJMenuBar(new MenuBar());
+
         //Display the window.
         frame.pack();
         frame.setVisible(true);
