@@ -36,7 +36,7 @@ public class Main {
         frame.setContentPane(livadaPlan);
 
         // Add menu bar with all 7 actions
-        frame.setJMenuBar(new MenuBar());
+        frame.setJMenuBar(new MenuBar(livadaPlan.getTableModel()));
 
         //Display the window.
         frame.pack();
