@@ -99,7 +99,7 @@ public class MenuBar extends JMenuBar {
                 if (result == JOptionPane.YES_OPTION) {
                     int row = Integer.parseInt(textField.getText());
                     System.out.println("Add row # " + row);
-                    tableModel.addRow(row);
+                    tableModel.addRow(row - 1);
                 } else if (result == JOptionPane.NO_OPTION) {
                     int column = Integer.parseInt(textField.getText());
                     System.out.println("Add column # " + column);
