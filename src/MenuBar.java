@@ -11,7 +11,7 @@ public class MenuBar extends JMenuBar {
         this.add(menu);
 
         menu.add(createAddRowColItem());
-        add(createRemoveRowColItem());
+        menu.add(createRemoveRowColItem());
         menu.add(createMockMenuItem("Макс Урожай"));
         menu.add(createMockMenuItem("Средн Урожай"));
         menu.add(createMockMenuItem("Общий урожай"));

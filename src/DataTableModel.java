@@ -56,10 +56,9 @@ public class DataTableModel extends AbstractTableModel {
             JOptionPane.showMessageDialog(null, message, "Неправильный индекс строчки", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Data[][] newRowData = new Data[rowData.length - 1][rowData[0].length];
-
+        Data[][] newRowData = new Data[rowData.length + 1][rowData[0].length];
+        for (int row = 0; row < rowData.length + 1; row++) {
         for (int col = 0; col < rowData[0].length; col++) {
-            for (int row = 0; row < rowData.length - 1; row++) {
                 if (row == i) {
                     newRowData[row][col] = new Data("", 0.);
                 } else if (row > i) {
