@@ -7,18 +7,26 @@ public class MenuBar extends JMenuBar {
 
     public MenuBar(DataTableModel tableModel) {
         this.tableModel = tableModel;
-        add(createAddRowColItem());
-        add(createMockMenuItem("Удалить"));
-        add(createMockMenuItem("Макс Урожай"));
-        add(createMockMenuItem("Средн Урожай"));
-        add(createMockMenuItem("Общий урожай"));
-        add(createMockMenuItem("Lin Spec"));
-        add(createMockMenuItem("Сектор К деревьев"));
+        JMenu menu = new JMenu("Меню");
+        this.add(menu);
+
+        menu.add(createAddRowColItem());
+        menu.add(createMockMenuItem("Удалить"));
+        menu.add(createMockMenuItem("Макс Урожай"));
+        menu.add(createMockMenuItem("Средн Урожай"));
+        menu.add(createMockMenuItem("Общий урожай"));
+        menu.add(createMockMenuItem("Lin Spec"));
+        menu.add(createMockMenuItem("Сектор К деревьев"));
     }
 
     private JMenuItem createMockMenuItem(String text) {
         JMenuItem item = new JMenuItem(text);
-        item.addActionListener(e -> JOptionPane.showMessageDialog(null, text));
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, text);
+            }
+        });
         return item;
     }
 
@@ -50,6 +58,7 @@ public class MenuBar extends JMenuBar {
                 if (result == JOptionPane.YES_OPTION) {
                     int row = Integer.parseInt(textField.getText());
                     System.out.println("Add row # " + row);
+                    tableModel.addRow(row);
                 } else if (result == JOptionPane.NO_OPTION) {
                     int column = Integer.parseInt(textField.getText());
                     System.out.println("Add column # " + column);
