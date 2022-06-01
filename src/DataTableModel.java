@@ -71,13 +71,15 @@ public class DataTableModel extends AbstractTableModel {
 
         rowData = newRowData;
 
+
         this.fireTableDataChanged();
         this.fireTableStructureChanged();
 
 
     }
 
-    public void removeRow(int i) {
+    public void removeRow(int i)
+    {
 
     }
 
