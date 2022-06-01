@@ -10,6 +10,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+
 /*
  * This code is taken from - https://tips4java.wordpress.com/2008/11/18/row-number-table/
  * Use a JTable as a renderer for row numbers of a given main table.

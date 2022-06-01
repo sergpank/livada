@@ -51,6 +51,30 @@ public class DataTableModel extends AbstractTableModel {
     }
 
     public void addRow(int i) {
+        if (i > rowData[0].length) {
+            String message = String.format("Невозможно добавить строчку %d так как в таблце всего %d колонок", i, rowData[0].length);
+            JOptionPane.showMessageDialog(null, message, "Неправильный индекс строчки", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Data[][] newRowData = new Data[rowData.length - 1][rowData[0].length];
+
+        for (int col = 0; col < rowData[0].length; col++) {
+            for (int row = 0; row < rowData.length - 1; row++) {
+                if (row == i) {
+                    newRowData[row][col] = new Data("", 0.);
+                } else if (row > i) {
+                    newRowData[row][col] = rowData[row - 1][col];
+                } else {
+                    newRowData[row][col] = rowData[row][col];
+                }
+            }
+        }
+
+        rowData = newRowData;
+
+        this.fireTableDataChanged();
+        this.fireTableStructureChanged();
+
 
     }
 
