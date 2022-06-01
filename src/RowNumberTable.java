@@ -11,10 +11,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /*
- * This code is took from - https://tips4java.wordpress.com/2008/11/18/row-number-table/
+ * This code is taken from - https://tips4java.wordpress.com/2008/11/18/row-number-table/
  * Use a JTable as a renderer for row numbers of a given main table.
- *  This table must be added to the row header of the scrollpane that
- *  contains the main table.
+ * This table must be added to the row header of the scrollpane that contains the main table.
  */
 public class RowNumberTable extends JTable
         implements ChangeListener, PropertyChangeListener, TableModelListener {
@@ -28,7 +27,6 @@ public class RowNumberTable extends JTable
         setFocusable(false);
         setAutoCreateColumnsFromModel(false);
         setSelectionModel(main.getSelectionModel());
-
 
         TableColumn column = new TableColumn();
         column.setHeaderValue(" ");
