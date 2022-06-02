@@ -1,5 +1,9 @@
+package ui;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+
+import logic.Data;
 
 public class DataTableModel extends AbstractTableModel {
 
@@ -113,14 +117,6 @@ public class DataTableModel extends AbstractTableModel {
 
         this.fireTableDataChanged();
         this.fireTableStructureChanged();
-    }
-
-    public String[] getColumnNames() {
-        return columnNames;
-    }
-
-    public void setColumnNames(String[] columnNames) {
-        this.columnNames = columnNames;
     }
 
     @Override

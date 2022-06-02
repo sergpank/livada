@@ -1,8 +1,13 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
+
+import logic.Data;
+import logic.LinSpecAction;
 
 public class MenuBar extends JMenuBar {
     private DataTableModel tableModel;
@@ -17,8 +22,15 @@ public class MenuBar extends JMenuBar {
         menu.add(createMaxHarvestItem("Максимальный Урожай"));
         menu.add(createAverageHarvestItem("Средний Урожай"));
         menu.add(createCountHarvestItem("Общий урожай"));
-        menu.add(createLinSpecItem("Lin Spec"));
+        menu.add(createMenuItem("Lin Spec", new LinSpecAction(tableModel)));
         menu.add(createMockMenuItem("Сектор К деревьев"));
+    }
+
+    private JMenuItem createMenuItem(String text, ActionListener al) {
+        JMenuItem item = new JMenuItem();
+        item.setText(text);
+        item.addActionListener(al);
+        return item;
     }
 
     private JMenuItem createLinSpecItem(String text) {

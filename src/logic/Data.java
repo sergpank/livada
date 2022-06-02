@@ -1,3 +1,5 @@
+package logic;
+
 public class Data {
     private String tree;
     private double harvest;

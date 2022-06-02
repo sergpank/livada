@@ -1,5 +1,9 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.*;
+
+import logic.Data;
 
 public class LivadaPlan extends JPanel {
 
