@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class MenuBar extends JMenuBar {
     private DataTableModel tableModel;
@@ -16,9 +15,58 @@ public class MenuBar extends JMenuBar {
         menu.add(createRemoveRowColItem("Удалить"));
         menu.add(createMaxHarvestItem("Максимальный Урожай"));
         menu.add(createAverageHarvestItem("Средний Урожай"));
-        menu.add(createMockMenuItem("Общий урожай"));
+        menu.add(createCountHarvestItem("Общий урожай"));
         menu.add(createMockMenuItem("Lin Spec"));
         menu.add(createMockMenuItem("Сектор К деревьев"));
+    }
+
+    private JMenuItem createCountHarvestItem(String text) {
+        JMenuItem item = new JMenuItem();
+        item.setText(text);
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Count and Sort harvest");
+
+                Map<String, Double> map = new HashMap<>();
+
+                for (Data[] row : tableModel.getRowData()) {
+                    for (Data d : row) {
+                        Double totalTreeHarvest = map.containsKey(d.getTree()) ? map.get(d.getTree()) + d.getHarvest() : d.getHarvest();
+                        map.put(d.getTree(), totalTreeHarvest);
+                    }
+                }
+                Data[] data = new Data[map.keySet().size()];
+
+                int pos = 0;
+                for (Map.Entry<String, Double> entry : map.entrySet()) {
+                    data[pos++] = new Data(entry.getKey(), entry.getValue());
+                }
+
+                for (int i = 0; i < data.length - 1; i++) {
+                    for (int j = i + 1; j < data.length; j++) {
+                        if (data[i].getHarvest() > data[j].getHarvest()) {
+                            Data tmp = data[i];
+                            data[i] = data[j];
+                            data[j] = tmp;
+                        }
+                    }
+                }
+
+                StringBuilder sb = new StringBuilder();
+                for (Data d : data) {
+                    sb.append(d.toString()).append('\n');
+                }
+
+                JOptionPane.showMessageDialog(null,
+                        sb.toString(),
+                        "Общий урожай",
+                        JOptionPane.PLAIN_MESSAGE);
+            }
+        });
+
+        return item;
     }
 
     private JMenuItem createAverageHarvestItem(String text) {
@@ -168,8 +216,8 @@ public class MenuBar extends JMenuBar {
                     System.out.println("Cancel add row/col");
                 }
             }
-        });    return item;
-
+        });
+        return item;
     }
 
     private JMenuItem createAddRowColItem(String text) {
