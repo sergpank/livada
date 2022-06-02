@@ -28,7 +28,7 @@ public class Data {
 
     @Override
     public String toString() {
-        return String.format("%s - %.3f", tree, harvest);
+        return String.format("%s - %.2f", tree, harvest);
     }
 
     public static void main(String[] args) {

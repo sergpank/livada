@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MenuBar extends JMenuBar {
     private DataTableModel tableModel;
@@ -10,17 +12,75 @@ public class MenuBar extends JMenuBar {
         JMenu menu = new JMenu("Меню");
         this.add(menu);
 
-        menu.add(createAddRowColItem());
-        menu.add(createRemoveRowColItem());
-        menu.add(createMockMenuItem("Макс Урожай"));
+        menu.add(createAddRowColItem("Добавить"));
+        menu.add(createRemoveRowColItem("Удалить"));
+        menu.add(createMaxHarvestItem("Макс Урожай"));
         menu.add(createMockMenuItem("Средн Урожай"));
         menu.add(createMockMenuItem("Общий урожай"));
         menu.add(createMockMenuItem("Lin Spec"));
         menu.add(createMockMenuItem("Сектор К деревьев"));
     }
-    private JMenuItem createRemoveRowColItem() {
+
+    private JMenuItem createMaxHarvestItem(String text) {
         JMenuItem item = new JMenuItem();
-        item.setText("Удалить");
+        item.setText(text);
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Max harvest");
+
+                JPanel panel = new JPanel();
+                panel.add(new JLabel("Выберите вид дерева"));
+                String[] trees = getUniqueTrees(tableModel.getRowData());
+                JComboBox<String> comboBox = new JComboBox<>(trees);
+                panel.add(comboBox);
+
+                double maxHarvest = 0.;
+
+                int result = JOptionPane.showOptionDialog(null,
+                        panel, "Определение коррдинат самого урожайного дерева",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        null);
+                if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().toString().trim().isEmpty()) {
+                    System.out.println("Nothing was selected");
+                    return;
+                }
+                if (result == JOptionPane.OK_OPTION) {
+                    String tree = comboBox.getSelectedItem().toString();
+                    System.out.println("Checking harvest for : " + tree);
+                    for (Data[] row : tableModel.getRowData()) {
+                        for (Data d : row) {
+                            if (d.getTree().equals(tree) && d.getHarvest() > maxHarvest) {
+                                maxHarvest = d.getHarvest();
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Cancel add row/col");
+                }
+                String msg = String.format("Саомое урожайное дерево [%s] дало %.2f центнеров урожая", comboBox.getSelectedItem(), maxHarvest);
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        });
+        return item;
+    }
+
+    private String[] getUniqueTrees(Data[][] rowData) {
+        Set<String> trees = new TreeSet<>();
+        for (Data[] array : rowData) {
+            for (Data data : array) {
+                trees.add(data.getTree());
+            }
+        }
+        return trees.toArray(new String[0]);
+    }
+
+    private JMenuItem createRemoveRowColItem(String text) {
+        JMenuItem item = new JMenuItem();
+        item.setText(text);
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,20 +120,9 @@ public class MenuBar extends JMenuBar {
 
     }
 
-    private JMenuItem createMockMenuItem(String text) {
-        JMenuItem item = new JMenuItem(text);
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, text);
-            }
-        });
-        return item;
-    }
-
-    private JMenuItem createAddRowColItem() {
+    private JMenuItem createAddRowColItem(String text) {
         JMenuItem item = new JMenuItem();
-        item.setText("Добавить");
+        item.setText(text);
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,6 +156,17 @@ public class MenuBar extends JMenuBar {
                 } else {
                     System.out.println("Cancel add row/col");
                 }
+            }
+        });
+        return item;
+    }
+
+    private JMenuItem createMockMenuItem(String text) {
+        JMenuItem item = new JMenuItem(text);
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, text);
             }
         });
         return item;
