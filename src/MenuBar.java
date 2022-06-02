@@ -14,11 +14,63 @@ public class MenuBar extends JMenuBar {
 
         menu.add(createAddRowColItem("Добавить"));
         menu.add(createRemoveRowColItem("Удалить"));
-        menu.add(createMaxHarvestItem("Макс Урожай"));
-        menu.add(createMockMenuItem("Средн Урожай"));
+        menu.add(createMaxHarvestItem("Максимальный Урожай"));
+        menu.add(createAverageHarvestItem("Средний Урожай"));
         menu.add(createMockMenuItem("Общий урожай"));
         menu.add(createMockMenuItem("Lin Spec"));
         menu.add(createMockMenuItem("Сектор К деревьев"));
+    }
+
+    private JMenuItem createAverageHarvestItem(String text) {
+        JMenuItem item = new JMenuItem();
+        item.setText(text);
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Avg harvest");
+
+                JPanel panel = new JPanel();
+                panel.add(new JLabel("Выберите вид дерева"));
+                String[] trees = getUniqueTrees(tableModel.getRowData());
+                JComboBox<String> comboBox = new JComboBox<>(trees);
+                panel.add(comboBox);
+
+                double harvest = 0.;
+                int cnt = 0;
+
+                int result = JOptionPane.showOptionDialog(null,
+                        panel, "Определение средней урожайности дерева",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        null);
+                if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().toString().trim().isEmpty()) {
+                    System.out.println("Nothing was selected");
+                    return;
+                }
+                if (result == JOptionPane.OK_OPTION) {
+                    String tree = comboBox.getSelectedItem().toString();
+                    System.out.println("Checking harvest for : " + tree);
+                    for (Data[] row : tableModel.getRowData()) {
+                        for (Data d : row) {
+                            if (d.getTree().equals(tree)) {
+                                harvest += d.getHarvest();
+                                cnt++;
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Cancel avg cnt");
+                }
+                double avg = harvest / cnt;
+                String msg = String.format("В среднем дерево [%s] дало %.2f центнеров урожая", comboBox.getSelectedItem(), avg);
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        });
+
+        return item;
     }
 
     private JMenuItem createMaxHarvestItem(String text) {
@@ -59,9 +111,9 @@ public class MenuBar extends JMenuBar {
                         }
                     }
                 } else {
-                    System.out.println("Cancel add row/col");
+                    System.out.println("Cancel max search");
                 }
-                String msg = String.format("Саомое урожайное дерево [%s] дало %.2f центнеров урожая", comboBox.getSelectedItem(), maxHarvest);
+                String msg = String.format("Самое урожайное дерево [%s] дало %.2f центнеров урожая", comboBox.getSelectedItem(), maxHarvest);
                 JOptionPane.showMessageDialog(null, msg);
             }
         });
